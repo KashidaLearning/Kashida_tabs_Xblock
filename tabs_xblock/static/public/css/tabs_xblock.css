@@ -1,34 +1,30 @@
 .kxblock-studio-flex {
   display: flex;
+  flex-direction: row;
   align-items: flex-start;
-  gap: 34px;
+  gap: 24px;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
 }
 .kxblock-studio-form-pane {
-  flex: 0 0 600px;
-  max-width: 800px;
-  min-width: 440px;
-  background: #f7f9fb;
-  padding: 32px 32px 24px 30px;
-  border-radius: 18px;
-  overflow: auto;   
+  flex: 0 0 40%;
+  min-width: 380px;
+  max-width: 520px;
+  overflow: scroll;
 }
 
 .kxblock-studio-preview-pane {
-  flex: 1 1 auto;
-  background: #fff9f0;
-  border-radius: 18px;
-  min-height: 400px;
-  overflow: auto;
-  margin-left: 0;
-}
-.xblock-form-preview {
+  flex: 1 1 60%;
+  min-width: 400px;
   background: #fff;
-  padding: 16px;
-  border: 1px solid #ddd;
   border-radius: 12px;
-  min-height: 300px;
+  overflow: auto;
+  padding: 12px;
+}
+.kxblock-studio-preview-pane .xblock-form-preview {
+  width: 100%;
+  min-height: 320px;
   box-sizing: border-box;
 }
 @media (max-width: 1200px) {
