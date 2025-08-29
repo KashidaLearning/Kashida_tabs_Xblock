@@ -1,0 +1,269 @@
+.kxblock-studio-flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 34px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.kxblock-studio-form-pane {
+  flex: 0 0 600px;
+  max-width: 800px;
+  min-width: 440px;
+  background: #f7f9fb;
+  padding: 32px 32px 24px 30px;
+  border-radius: 18px;
+  overflow: scroll;                
+  max-height: 700px;
+}
+.kxblock-studio-preview-pane {
+  flex: 1 1 0;
+  background: #fff9f0;
+  border-radius: 18px;
+  min-width: 520px;
+  max-width: 1000px;
+  margin-left: 0;
+}
+
+@media (max-width: 1200px) {
+  .kxblock-studio-form-pane,
+  .kxblock-studio-preview-pane {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+@media (max-width: 1050px) {
+  .kxblock-studio-flex {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .kxblock-studio-form-pane,
+  .kxblock-studio-preview-pane {
+    max-width: 100%;
+    min-width: 0;
+    margin-left: 0;
+  }
+}
+
+.xblock-form-section { margin-bottom: 24px; }
+.xblock-form-label { display: block; font-weight: 600; margin-bottom: 5px; }
+.xblock-form-control {
+  width: 100%;
+  min-width: 360px;
+  max-width: 760px;
+  padding: 12px 15px;
+  font-size: 17px;
+  box-sizing: border-box;
+  border: 1.5px solid #d0d7e5;
+  border-radius: 5px;
+  margin-bottom: 4px;
+  background: #fff;
+}
+.xblock-form-help { font-size: 13px; color: #888; margin-left: 2px; }
+.xblock-form-actions { margin-top: 32px; border-top: 1px solid #e2e2e2; padding-top: 18px; text-align: left; }
+.xblock-form-save-button {
+  background: #338dc9; color: #fff; font-weight: 600;
+  border: none; border-radius: 5px; padding: 10px 36px; margin-right: 16px;
+  font-size: 18px; cursor: pointer;
+  transition: background 0.18s;
+}
+.xblock-form-cancel-button {
+  background: none; color: #888; font-size: 18px;
+  border: none; text-decoration: underline; cursor: pointer; padding: 10px 24px;
+}
+.xblock-form-save-button:hover { background: #287ab6; }
+.xblock-form-cancel-button:hover { color: #222; }
+
+.box {
+  background: #fff8f3;
+  border: none;
+  border-radius: 15px;
+  padding: 0 0 8px 0;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.instruction {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0 8px 2px;
+}
+.insticon img {
+  display: block;
+  border-radius: 9px;
+  max-width: 54px;
+  max-height: 54px;
+  box-shadow: 0 2px 10px rgba(150,150,150,0.08);
+}
+.insttext {
+  flex: 1;
+  font-size: 18px;
+  color: #000000;
+  font-weight: 500;
+  padding-left: 6px;
+}
+
+.box.rtl .instruction {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  text-align: right;
+}
+.box.rtl .insticon {
+  order: 2;
+  margin-left: 12px;
+  margin-right: 0;
+}
+.box.rtl .insttext {
+  order: 1;
+  padding-left: 0;
+  padding-right: 6px;
+  text-align: right;
+}
+
+.mainbox {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  flex-wrap: wrap;
+  min-height: 160px;
+}
+
+.tabss {
+  display: flex;
+  gap: 11px;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.tabss.vertical { flex-direction: column; width: auto; }
+.tabss.horizontal { flex-direction: row; flex-wrap: wrap; width: 100%; }
+
+.tablinks.active { font-weight: 900; }
+
+.tabcontent {
+  display: none;
+  background: inherit;
+  min-height: 170px;
+  padding: 26px 22px 20px 22px;
+  border-radius: 6px;
+  position: relative;
+  font-size: 17px;
+  color: inherit;
+  word-break: break-word;
+  transition: background 0.14s, color 0.14s;
+  flex: 1 1 0;
+}
+.tabcontent.active { display: block; }
+.tabcontent img {
+  margin-top: 14px;
+  border-radius: 10px;
+  max-width: 265px;
+  box-shadow: 0 2px 12px rgba(160,160,160,0.10);
+}
+.tabcontent h4 { margin-top: 0; font-weight: bold; color: #2039b8; }
+.tabcontent p { margin-bottom: 12px; }
+
+.box.rtl .tabcontent,
+.box.rtl .tabcontent * { text-align: right; }
+
+.tabss.horizontal.underline-active {
+  position: relative;
+  width: 100%;
+  padding: 0 16px;
+}
+
+.tabss.horizontal.underline-active::after {
+  content: "";
+  position: absolute;
+  left: 8px;               
+  right: 61px;
+  bottom: 0;
+  height: 2px;
+  background: #D9D9D9;
+  pointer-events: none;
+}
+
+.tabss.horizontal.underline-active .tablinks {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 12px 0;
+  margin: 0 20px;
+  font-weight: 700;
+  color: #6b6b6b;
+  line-height: 1;
+}
+
+.tabss.horizontal.underline-active .tablinks.active {
+  position: relative;
+  color: #23928b !important;
+}
+.tabss.horizontal.underline-active .tablinks.active::after {
+  content: "";
+  position: absolute;
+  left: -28px;
+  right: -39px;
+  bottom: -2px;
+  height: 3px;                      
+  background: var(--underline-color, #23928b);
+  border-radius: 2px;
+}
+
+.tabss.vertical.underline-active .tablinks.active {
+  border-bottom: 4px solid var(--underline-color, #23928b) !important;
+  color: #23928b !important;
+  background: #fff !important;
+  font-weight: bold !important;
+}
+.tabss.vertical:not(.underline-active) .tablinks.active { border-bottom: none !important; }
+.tabss.vertical.style-2 .tablinks.active {
+  border-bottom: 4px solid #23928b !important;
+  font-weight: bold !important;
+}
+
+.tabss.horizontal.hstyle-2 {
+  padding: 0 16px;
+  gap: 12px;
+  border-bottom: 2px solid #D9D9D9; 
+}
+.tabss.horizontal.hstyle-2 .tablinks {
+  background: #eeeeee;
+  color: #6b6b6b;
+  padding: 14px 24px;
+  border: 0;
+  margin: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-weight: 700;
+}
+.tabss.horizontal.hstyle-2 .tablinks.active {
+  background: #ffffff;
+  color: #23928b !important;
+  border-left: 3px solid #23928b;
+  border-top: 3px solid #23928b;
+  margin-bottom: -3px;        
+  position: relative;
+  z-index: 2;
+}
+.mainbox .tabss.horizontal.hstyle-2 ~ .tabcontent {
+  border: 3px solid #23928b;
+  border-top: 0;              
+  border-radius: 0 0 8px 8px;
+  margin-top: 0;
+  padding: 32px 28px 24px 28px;
+}
+.kxblock-studio-preview-pane {
+  position: relative;
+  z-index: 1; /* enough to be above background, not above Studio UI */
+}
+
+.kxblock-studio-preview-pane * {
+  pointer-events: auto; /* allow clicking inside preview */
+}
+
+
+@media (max-width: 900px) {
+  .mainbox { flex-direction: column; }
+  .tabss { width: 100%; flex-direction: row; }
+  .tabcontent { width: 100%; margin-top: 12px; }
+}

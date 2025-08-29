@@ -1,0 +1,217 @@
+<div class="kxblock-studio-flex">
+  <div class="kxblock-studio-form-pane">
+    <form class="form-horizontal">
+
+      <fieldset style="margin-bottom: 30px; border: 1px solid #ccc; padding: 15px;">
+        <legend><strong>General Settings</strong></legend>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Display Name</label>
+          <input type="text" name="display_name" class="xblock-form-control" value="{display_name}">
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tab Orientation</label>
+          <select name="orientation" class="xblock-form-control">
+            <option value="vertical" {vertical_selected}>Vertical Tabs</option>
+            <option value="horizontal" {horizontal_selected}>Horizontal Tabs</option>
+          </select>
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Predefined Style</label>
+          <select name="predefined_style" class="xblock-form-control" id="predefined-style-select">
+            <option value="default" {predefined_style_default_selected}>Default</option>
+            <option value="vertical-1" {predefined_style_vertical_1_selected}>Vertical Style 1</option>
+            <option value="vertical-2" {predefined_style_vertical_2_selected}>Vertical Style 2</option>
+            <option value="horizontal-1" {predefined_style_horizontal_1_selected}>Horizontal Style 1</option>
+            <option value="horizontal-2" {predefined_style_horizontal_2_selected}>Horizontal Style 2</option>
+          </select>
+          <span class="xblock-form-help" id="predefined-style-desc"></span>
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Text Direction</label>
+          <select name="text_direction" class="xblock-form-control">
+            <option value="ltr" {ltr_selected}>Left to Right (LTR)</option>
+            <option value="rtl" {rtl_selected}>Right to Left (RTL - Arabic)</option>
+          </select>
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Background Color (Main Card)</label>
+          <input type="color" name="background_color" class="xblock-form-control" value="{background_color}">
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Instruction Area Padding (CSS)</label>
+          <input type="text" name="instruction_padding" class="xblock-form-control" value="{instruction_padding}">
+          <span class="xblock-form-help">Example: 10px 15px</span>
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Main Box Padding (CSS)</label>
+          <input type="text" name="mainbox_padding" class="xblock-form-control" value="{mainbox_padding}">
+          <span class="xblock-form-help">Example: 20px 0px</span>
+        </div>
+      </fieldset>
+
+      <fieldset style="margin-bottom: 30px; border: 1px solid #ccc; padding: 15px;">
+        <legend><strong>Icon Settings</strong></legend>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Icon Image URL</label>
+          <input type="text" name="icon_image_url" class="xblock-form-control" value="{icon_image_url}">
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Intro Text</label>
+          <input type="text" name="intro_text" class="xblock-form-control" value="{intro_text}">
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Icon Width</label>
+          <input type="text" name="icon_width" class="xblock-form-control" value="{icon_width}">
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Icon Height</label>
+          <input type="text" name="icon_height" class="xblock-form-control" value="{icon_height}">
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Intro Font Color</label>
+          <input type="color" name="intro_font_color" class="xblock-form-control" value="{intro_font_color}" style="width:40px;display:inline-block;">
+          <span style="display:inline-block;width:24px;height:24px;vertical-align:middle;border:1px solid #ccc;background:{intro_font_color};margin-left:8px;"></span>
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Intro Font Size</label>
+          <input type="number" name="intro_font_size" class="xblock-form-control" value="{intro_font_size}">
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Intro Padding Left</label>
+          <input type="text" name="intro_padding_left" class="xblock-form-control" value="{intro_padding_left}">
+        </div>
+      </fieldset>
+
+      <fieldset style="margin-bottom: 30px; border: 1px solid #ccc; padding: 15px;">
+        <legend><strong>Tab Settings</strong></legend>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Number of Tabs (max 10)</label>
+          <input type="number" name="tab_count" min="1" max="10" class="xblock-form-control" value="{tab_count}">
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tab Button Width (CSS)</label>
+          <input type="text" name="tab_button_width" class="xblock-form-control" value="{tab_button_width}">
+          <span class="xblock-form-help">Example: 195px or 100%</span>
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tab Font Size (px)</label>
+          <input type="number" name="tab_font_size" min="12" max="48" class="xblock-form-control" value="{tab_font_size}">
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tab Font Color</label>
+          <input type="color" name="tab_font_color" class="xblock-form-control" value="{tab_font_color}" style="width:40px;display:inline-block;">
+          <span style="display:inline-block;width:24px;height:24px;vertical-align:middle;border:1px solid #ccc;background:{tab_font_color};margin-left:8px;"></span>
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tab Button Padding (CSS) — Fallback</label>
+          <input type="text" name="tablink_padding" class="xblock-form-control" value="{tablink_padding}">
+          <span class="xblock-form-help">Example: 10px 18px (used if per-side is empty)</span>
+        </div>
+
+
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tabs Gap</label>
+          <input type="text" name="tab_gap" class="xblock-form-control" value="{tab_gap}">
+          <span class="xblock-form-help">Example: 11px</span>
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tabs Container Padding (CSS)</label>
+          <input type="text" name="tab_padding" class="xblock-form-control" value="{tab_padding}">
+          <span class="xblock-form-help">Example: 30px 30px 18px 30px</span>
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tab Color (Normal)</label>
+          <input type="color" name="tab_bg_color" class="xblock-form-control" value="{tab_bg_color}" style="width:40px;display:inline-block;">
+          <span style="display:inline-block;width:24px;height:24px;vertical-align:middle;border:1px solid #ccc;background:{tab_bg_color};margin-left:8px;"></span>
+        </div>
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tab Border Color</label>
+          <input type="color" name="tab_border_color" class="xblock-form-control" value="{tab_border_color}" style="width:40px;display:inline-block;">
+          <span style="display:inline-block;width:24px;height:24px;vertical-align:middle;border:1px solid #ccc;background:{tab_border_color};margin-left:8px;"></span>
+        </div>
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tab Border Width</label>
+          <input type="text" name="tab_border_width" class="xblock-form-control" value="{tab_border_width}">
+          <span class="xblock-form-help">Example: 2px</span>
+        </div>
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tab Border Style</label>
+          <select name="tab_border_style" class="xblock-form-control">
+            <option value="solid" {tab_border_style_solid_selected}>Solid</option>
+            <option value="dashed" {tab_border_style_dashed_selected}>Dashed</option>
+            <option value="dotted" {tab_border_style_dotted_selected}>Dotted</option>
+          </select>
+        </div>
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Tab Border Radius</label>
+          <input type="text" name="tab_border_radius" class="xblock-form-control" value="{tab_border_radius}">
+          <span class="xblock-form-help">Example: 10px or 24px 24px 0 0</span>
+        </div>
+
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Active Tab Color</label>
+          <input type="color" name="active_tab_color" class="xblock-form-control" value="{active_tab_color}" style="width:40px;display:inline-block;">
+          <span style="display:inline-block;width:24px;height:24px;vertical-align:middle;border:1px solid #ccc;background:{active_tab_color};margin-left:8px;"></span>
+        </div>
+        <div class="xblock-form-section">
+          <label class="xblock-form-label">Active Tab Font Color</label>
+          <input type="color" name="active_tab_font_color" class="xblock-form-control" value="{active_tab_font_color}" style="width:40px;display:inline-block;">
+          <span style="display:inline-block;width:24px;height:24px;vertical-align:middle;border:1px solid #ccc;background:{active_tab_font_color};margin-left:8px;"></span>
+        </div>
+      <div class="xblock-form-section">
+        <label class="xblock-form-label">Active Tab Border Style</label>
+        <select name="active_tab_border_style" class="xblock-form-control" id="active-tab-border-style-select">
+            <option value="solid" {active_tab_border_style_solid_selected}>Solid box (default)</option>
+            <option value="underline" {active_tab_border_style_underline_selected}>Underline only</option>
+        </select>
+        <span class="xblock-form-help">Underline only = thick underline for active tab, no background or box</span>
+      </div>
+      <div class="xblock-form-section" id="underline-color-section" style="display:none;">
+        <label class="xblock-form-label">Underline Color</label>
+        <input type="color" name="underline_color" class="xblock-form-control" value="{underline_color}" style="width:40px;display:inline-block;">
+        <span class="xblock-form-help">Pick the underline color for underline mode</span>
+      </div>
+      <div class="xblock-form-section">
+        <label class="xblock-form-label" style="display:inline-block;">Remove border for Active Tab?</label>
+        <input type="checkbox" name="active_tab_no_border" value="true" {active_tab_no_border_checked} style="width:18px; height:18px; vertical-align:middle; margin-left:8px;">
+      </div>
+
+
+
+      </fieldset>
+
+      <div id="tabs-xblock-tab-fields"></div>
+
+      <div class="xblock-form-actions" style="display: flex; gap: 18px; margin-top: 30px;">
+        <button type="button" class="xblock-form-save-button">Save</button>
+        <button type="button" class="xblock-form-cancel-button">Cancel</button>
+      </div>
+    </form>
+  </div> 
+
+  <div class="kxblock-studio-preview-pane">
+    <div class="xblock-form-preview" id="tabs-xblock-preview-{uid}" data-xblock-uid="{uid}"></div>
+  </div>
+</div>
