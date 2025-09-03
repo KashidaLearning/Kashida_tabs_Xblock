@@ -285,32 +285,30 @@ function initTabsXBlockStudio(runtime, element, data) {
             tabFieldsDiv.appendChild(section);
         });
 
-    setTimeout(function() {
-        document.querySelectorAll(`.tinymce-tabcontent`).forEach(function(area) {
-            if (tinymce.get(area.id)) tinymce.get(area.id).remove();
-            tinymce.init({
-                selector: `#${area.id}`,
-                menubar: false,
-                plugins: 'image link lists code',
-                toolbar: 'undo redo | formatselect | bold italic underline | forecolor backcolor | alignleft aligncenter alignright | bullist numlist | image link | code',
-                height: 260,
-                branding: false,
-                base_url: data.tinymce_base_url,   // ✅ from Python
-                suffix: ".min",                   // ✅ so it looks for tinymce.min.js, skin.min.css, etc.
-                images_upload_handler: function (blobInfo, success, failure) {
-                    success('data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64());
-                },
-                setup: function(editor) {
-                    editor.on('change keyup', function() {
-                        area.value = editor.getContent();
-                        const idx = parseInt(area.id.split('_').pop(),10);
-                        tabsData[idx].content = area.value;
-                        renderPreview();
-                    });
-                }
+        setTimeout(function() {
+            document.querySelectorAll(`.tinymce-tabcontent`).forEach(function(area) {
+                if (tinymce.get(area.id)) tinymce.get(area.id).remove();
+                tinymce.init({
+                    selector: `#${area.id}`,
+                    menubar: false,
+                    plugins: 'image link lists code',
+                    toolbar: 'undo redo | formatselect | bold italic underline | forecolor backcolor | alignleft aligncenter alignright | bullist numlist | image link | code',
+                    height: 260,
+                    branding: false,
+                    images_upload_handler: function (blobInfo, success, failure) {
+                        success('data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64());
+                    },
+                    setup: function(editor) {
+                        editor.on('change keyup', function() {
+                            area.value = editor.getContent();
+                            const idx = parseInt(area.id.split('_').pop(),10);
+                            tabsData[idx].content = area.value;
+                            renderPreview();
+                        });
+                    }
+                });
             });
-        });
-    }, 120);
+        }, 120);
     }
 
     function wireInputs() {
