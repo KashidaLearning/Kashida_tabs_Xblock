@@ -148,7 +148,7 @@ class TabsXBlock(XBlock):
 
         frag.add_css(self.resource_string('static/public/css/tabs_xblock.css'))
         frag.add_javascript(self.resource_string('static/public/js/tabs_xblock.js'))
-        frag.add_javascript_url("https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js")
+        frag.add_javascript_url(self.runtime.local_resource_url(self, 'public/tinymce/tinymce.min.js'))
         frag.initialize_js('initTabsXBlockStudio', {
             'tabs_content': self.tabs_content,
             'xblock_uid': safe,
