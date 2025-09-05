@@ -170,16 +170,7 @@
   padding: 0 16px;
 }
 
-.tabss.horizontal.underline-active::after {
-  content: "";
-  position: absolute;
-  left: 8px;               
-  right: 61px;
-  bottom: 0;
-  height: 2px;
-  background: #D9D9D9;
-  pointer-events: none;
-}
+
 
 .tabss.horizontal.underline-active .tablinks {
   background: transparent !important;
@@ -196,16 +187,7 @@
   position: relative;
   color: #23928b !important;
 }
-.tabss.horizontal.underline-active .tablinks.active::after {
-  content: "";
-  position: absolute;
-  left: -28px;
-  right: -39px;
-  bottom: -2px;
-  height: 3px;                      
-  background: var(--underline-color, #23928b);
-  border-radius: 2px;
-}
+
 
 .tabss.vertical.underline-active .tablinks.active {
   border-bottom: 4px solid var(--underline-color, #23928b) !important;
