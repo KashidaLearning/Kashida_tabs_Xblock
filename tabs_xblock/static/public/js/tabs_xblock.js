@@ -1,4 +1,5 @@
 function initTabsXBlockStudio(runtime, element, data) {
+
     if (window.jQuery && element instanceof window.jQuery) {
         element = element[0];
     }
@@ -85,184 +86,216 @@ function initTabsXBlockStudio(runtime, element, data) {
     }
 
     function renderPreview() {
-        const introFontColor = introFontColorInput?.value || "#000000";
-        const introFontSize = introFontSizeInput?.value || "16";
-        const introPaddingLeft = introPaddingLeftInput?.value || "0px";
-        const bg = bgInput?.value || "#fff8f3";
-        const tabFontSize = tabFontSizeInput?.value || "16";
-        const tabFontColor = tabFontColorInput?.value || "#6b6b6b";
-        const icon = iconInput?.value || "";
-        const iconW = iconWidthInput?.value || "48px";
-        const iconH = iconHeightInput?.value || "48px";
-        const intro = introInput?.value || "";
-        const tabPadding = tabPaddingInput?.value || "30px 30px 18px 30px";
-        const instructionPadding = instructionPaddingInput?.value || "10px 15px";
-        const mainboxPadding = mainboxPaddingInput?.value || "20px 0px";
-        const tablinkPadding = tablinkPaddingInput?.value || "12px 0";
-        const orientation = orientationInput?.value || "vertical";
-        const tabButtonWidth = tabButtonWidthInput?.value || "195px";
-        const textDirection = textDirectionInput?.value || "ltr";
-        const rtlClass = textDirection === "rtl" ? "rtl" : "";
-        const tabBgColor = tabBgColorInput?.value || "#2039b8";
-        const tabBorderColor = tabBorderColorInput?.value || "#e3e3e3";
-        const tabBorderWidth = tabBorderWidthInput?.value || "0px";
-        const tabBorderStyle = tabBorderStyleInput?.value || "solid";
-        const tabBorderRadius = tabBorderRadiusInput?.value || "0px";
-        const activeTabColor = activeTabColorInput?.value || "#d3dee7";
-        const activeTabFontColor = activeTabFontColorInput?.value || "#2140b7";
-        const activeTabBorderStyle = activeTabBorderStyleInput?.value || "solid";
-        const underlineColor = underlineColorInput?.value || "#23928b";
-        const tabGap = tabGapInput?.value || "11px";
+    const introFontColor = introFontColorInput?.value || "#000000";
+    const introFontSize = introFontSizeInput?.value || "16";
+    const introPaddingLeft = introPaddingLeftInput?.value || "0px";
+    const bg = bgInput?.value || "#fff8f3";
+    const tabFontSize = tabFontSizeInput?.value || "16";
+    const tabFontColor = tabFontColorInput?.value || "#6b6b6b";
+    const icon = iconInput?.value || "";
+    const iconW = iconWidthInput?.value || "48px";
+    const iconH = iconHeightInput?.value || "48px";
+    const intro = introInput?.value || "";
+    const tabPadding = tabPaddingInput?.value || "30px 30px 18px 30px";
+    const instructionPadding = instructionPaddingInput?.value || "10px 15px";
+    const mainboxPadding = mainboxPaddingInput?.value || "20px 0px";
+    const tablinkPadding = tablinkPaddingInput?.value || "12px 0";
+    const orientation = orientationInput?.value || "vertical";
+    const tabButtonWidth = tabButtonWidthInput?.value || "195px";
+    const textDirection = textDirectionInput?.value || "ltr";
+    const rtlClass = textDirection === "rtl" ? "rtl" : "";
+    const tabBgColor = tabBgColorInput?.value || "#2039b8";
+    const tabBorderColor = tabBorderColorInput?.value || "#e3e3e3";
+    const tabBorderWidth = tabBorderWidthInput?.value || "0px";
+    const tabBorderStyle = tabBorderStyleInput?.value || "solid";
+    const tabBorderRadius = tabBorderRadiusInput?.value || "0px";
+    const activeTabColor = activeTabColorInput?.value || "#d3dee7";
+    const activeTabFontColor = activeTabFontColorInput?.value || "#2140b7";
+    const activeTabBorderStyle = activeTabBorderStyleInput?.value || "solid";
+    const underlineColor = underlineColorInput?.value || "#23928b";
+    const tabGap = tabGapInput?.value || "11px";
 
-        let underlineStyle = "";
-        let tabssClass = `tabss ${orientation}`;
-        if (predefinedStyleInput.value === "vertical-1") tabssClass += " style-1";
-        if (predefinedStyleInput.value === "vertical-2") tabssClass += " style-2";
-        if (predefinedStyleInput.value === "horizontal-2") tabssClass += " hstyle-2"; 
-        if (activeTabBorderStyle === "underline") {
-            tabssClass += " underline-active";
-            underlineStyle = `--underline-color: ${underlineColor};`;
-        }
-
-        const mainboxGap = (predefinedStyleInput.value === "horizontal-2") ? "0px" : "16px";
-
-        let html = `
-            <div class="box ${rtlClass}" dir="${textDirection}" style="background:${bg};">
-                <div class="instruction" style="padding:${instructionPadding};">
-                    <div class="insticon">
-                        <img src="${icon}" style="width:${iconW};height:${iconH};object-fit:contain;border-radius:9px;"/>
-                    </div>
-                    <div class="insttext" style="color:${introFontColor};font-size:${Number(introFontSize)}px;padding-left:${introPaddingLeft};font-weight:500;">${intro}</div>
-                </div><br>
-                <div class="mainbox" style="padding:${mainboxPadding};display:flex;gap:${mainboxGap};">
-                    <div class="${tabssClass}" style="padding:${tabPadding};gap:${tabGap};${underlineStyle}">
-        `;
-
-        const isHStyle2 = (predefinedStyleInput.value === "horizontal-2"); 
-        
-
-        tabsData.forEach((tab, i) => {
-            const isActive = i === 0;
-            const isUnderline = activeTabBorderStyle === "underline";
-
-            const btn_bg = isHStyle2
-                ? (isActive ? "#ffffff" : "#eeeeee")
-                : (isUnderline ? "transparent" : (isActive ? activeTabColor : tabBgColor));
-
-            const btn_font_color = isActive ? activeTabFontColor : tabFontColor;
-
-            let btn_border = "none";
-            if (!isUnderline && !isHStyle2) {
-                btn_border = `${tabBorderWidth} ${tabBorderStyle} ${tabBorderColor}`;
-                const noBorder = element.querySelector('[name="active_tab_no_border"]')?.checked;
-                if (isActive && noBorder) { btn_border = "none"; }
-            }
-
-            html += `<button type="button" class="tablinks${isActive ? " active" : ""}" 
-                style="
-                    width:${tabButtonWidth};
-                    background:${btn_bg};
-                    color:${btn_font_color};
-                    font-size:${Number(tabFontSize)}px;
-                    padding:${tablinkPadding};
-                    border:${btn_border};
-                    border-radius:${isHStyle2 ? '8px 8px 0 0' : tabBorderRadius};
-                    font-weight:600;
-                    transition:background 0.18s, color 0.18s, border 0.18s;
-                    ${isActive && isHStyle2 ? 'margin-bottom:-3px;' : ''}
-                "
-            >${tab.title}</button>`;
-        });
-
-        html += `<p style="margin:0px;"><br></p></div>`;
-
-        tabsData.forEach((tab, i) => {
-            html += `<div id="${(tab.id||`tab${i}`)}-${xblockUid}" class="tabcontent${i===0 ? " active" : ""}" style="display:${i===0 ? "block" : "none"};">${tab.content}</div>`;
-        });
-
-        html += `</div></div>`;
-        previewDiv.innerHTML = html;
-
-
-        const box = previewDiv.querySelector('.mainbox');
-        if (!box) return;
-        const previewTabs = box.querySelectorAll('.tablinks');
-        const previewPanels = box.querySelectorAll('.tabcontent');
-        previewTabs.forEach((btn, idx) => {
-            btn.addEventListener('click', function() {
-                const isUnderline = activeTabBorderStyle === "underline";
-                const isHS2 = (predefinedStyleInput.value === "horizontal-2");
-                previewTabs.forEach((b) => {
-                    b.classList.remove('active');
-                    if (isUnderline) {
-                        b.style.background = "transparent";
-                        b.style.color = tabFontColor;
-                        b.style.border = "none";
-                        b.style.marginBottom = "0";
-                        b.style.borderRadius = "0";
-                    } else if (isHS2) {
-                        b.style.background = "#eeeeee";
-                        b.style.color = tabFontColor;
-                        b.style.border = "none";
-                        b.style.borderRadius = "8px 8px 0 0";
-                        b.style.marginBottom = "0";
-                    } else {
-                        b.style.background = tabBgColor;
-                        b.style.color = tabFontColor;
-                        b.style.border = `${tabBorderWidth} ${tabBorderStyle} ${tabBorderColor}`;
-                        b.style.borderRadius = tabBorderRadius;
-                        b.style.marginBottom = "0";
-                    }
-                });
-                previewPanels.forEach(p => p.style.display = "none");
-                btn.classList.add('active');
-                previewPanels[idx].style.display = "block";
-
-                if (isUnderline) {
-                    btn.style.background = "transparent";
-                    btn.style.border = "none";
-                    btn.style.color = activeTabFontColor;
-                    btn.style.marginBottom = "0";
-                } else if (isHS2) {
-                    btn.style.background = "#ffffff";
-                    btn.style.border = "none"; 
-                    
-                    btn.style.color = activeTabFontColor;
-                    btn.style.borderRadius = "8px 8px 0 0";
-                    btn.style.marginBottom = "-3px";
-                } else {
-                    btn.style.background = activeTabColor;
-                    btn.style.color = activeTabFontColor;
-                    const noBorder = element.querySelector('[name="active_tab_no_border"]')?.checked;
-                    btn.style.border = noBorder ? "none" : `${tabBorderWidth} ${tabBorderStyle} ${tabBorderColor}`;
-                    btn.style.borderRadius = tabBorderRadius;
-                    btn.style.marginBottom = "0";
-                }
-            });
-        });
-        if (previewTabs[0]) {
-            const isUnderline = activeTabBorderStyle === "underline";
-            const isHS2 = (predefinedStyleInput.value === "horizontal-2");
-            if (isUnderline) {
-                previewTabs[0].style.background = "transparent";
-                previewTabs[0].style.border = "none";
-                previewTabs[0].style.color = activeTabFontColor;
-                previewTabs[0].style.marginBottom = "0";
-            } else if (isHS2) {
-                previewTabs[0].style.background = "#ffffff";
-                previewTabs[0].style.border = "none";
-                previewTabs[0].style.color = activeTabFontColor;
-                previewTabs[0].style.borderRadius = "8px 8px 0 0";
-                previewTabs[0].style.marginBottom = "-3px";
-            } else {
-                previewTabs[0].style.background = activeTabColor;
-                previewTabs[0].style.color = activeTabFontColor;
-            }
-        }
+    let underlineStyle = "";
+    let tabssClass = `tabss ${orientation}`;
+    if (predefinedStyleInput.value === "vertical-1") tabssClass += " style-1";
+    if (predefinedStyleInput.value === "vertical-2") tabssClass += " style-2";
+    if (predefinedStyleInput.value === "horizontal-1") tabssClass += " hstyle-1"; // added
+    if (predefinedStyleInput.value === "horizontal-2") tabssClass += " hstyle-2"; 
+    if (activeTabBorderStyle === "underline") {
+        tabssClass += " underline-active";
+        underlineStyle = `--underline-color: ${underlineColor};`;
     }
 
-    function ensureCountAndFill() {
-    
+    const mainboxGap = (predefinedStyleInput.value === "horizontal-2") ? "0px" : "16px";
+
+    let html = `
+        <div class="box ${rtlClass}" dir="${textDirection}" style="background:${bg};">
+            <div class="instruction" style="padding:${instructionPadding};">
+                <div class="insticon">
+                    <img src="${icon}" style="width:${iconW};height:${iconH};object-fit:contain;border-radius:9px;"/>
+                </div>
+                <div class="insttext" style="color:${introFontColor};font-size:${Number(introFontSize)}px;padding-left:${introPaddingLeft};font-weight:500;">${intro}</div>
+            </div><br>
+            <div class="mainbox" style="padding:${mainboxPadding};display:flex;gap:${mainboxGap};">
+                <div class="${tabssClass}" style="padding:${tabPadding};gap:${tabGap};${underlineStyle}">
+    `;
+
+    const isHStyle2 = (predefinedStyleInput.value === "horizontal-2"); 
+    const isHStyle1 = (predefinedStyleInput.value === "horizontal-1"); // added
+    const isStyle2  = (predefinedStyleInput.value === "vertical-2"); 
+
+    tabsData.forEach((tab, i) => {
+        const isActive = i === 0;
+        const isUnderline = activeTabBorderStyle === "underline";
+
+        const btn_bg = isHStyle2
+            ? (isActive ? "#ffffff" : "#eeeeee")
+            : (isUnderline ? "transparent" : (isActive ? activeTabColor : tabBgColor));
+
+        const btn_font_color = isActive ? activeTabFontColor : tabFontColor;
+
+        let btn_border = "none";
+        if (!isUnderline && !isHStyle2 && !isStyle2 && !isHStyle1) { 
+            btn_border = `${tabBorderWidth} ${tabBorderStyle} ${tabBorderColor}`;
+            const noBorder = element.querySelector('[name="active_tab_no_border"]')?.checked;
+            if (isActive && noBorder) { btn_border = "none"; }
+        }
+
+        html += `<button type="button" class="tablinks${isActive ? " active" : ""}" 
+            style="
+                width:${tabButtonWidth};
+                background:${btn_bg};
+                color:${btn_font_color};
+                font-size:${Number(tabFontSize)}px;
+                padding:${tablinkPadding};
+                ${isStyle2 || isHStyle1 || isHStyle2 ? '' : `border:${btn_border};`}
+                ${isActive && isHStyle2 ? 'margin-bottom:-3px;' : ''}
+            "
+        >${tab.title}</button>`;
+    });
+
+    html += `<p style="margin:0px;"><br></p></div>`;
+
+    tabsData.forEach((tab, i) => {
+        html += `<div id="${(tab.id||`tab${i}`)}-${xblockUid}" class="tabcontent${i===0 ? " active" : ""}" style="display:${i===0 ? "block" : "none"};">${tab.content}</div>`;
+    });
+
+    html += `</div></div>`;
+    previewDiv.innerHTML = html;
+
+
+    const box = previewDiv.querySelector('.mainbox');
+    if (!box) return;
+    const previewTabs = box.querySelectorAll('.tablinks');
+    const previewPanels = box.querySelectorAll('.tabcontent');
+    previewTabs.forEach((btn, idx) => {
+        btn.addEventListener('click', function() {
+            const isUnderline = activeTabBorderStyle === "underline";
+            const isHS2 = (predefinedStyleInput.value === "horizontal-2");
+            const isHStyle1 = (predefinedStyleInput.value === "horizontal-1"); // added
+            const isStyle2 = (predefinedStyleInput.value === "vertical-2"); 
+
+            previewTabs.forEach((b) => {
+                b.classList.remove('active');
+                if (isUnderline) {
+                    b.style.color = tabFontColor;
+                    b.style.border = "none";
+                    b.style.marginBottom = "0";
+                    b.style.borderRadius = "0";
+                } else if (isHS2) {
+                    b.style.background = "#eeeeee";
+                    b.style.color = tabFontColor;
+                    b.style.removeProperty("border");
+                    b.style.marginBottom = "0";
+                } else if (isHStyle1) {
+                    b.style.background = "transparent";
+                    b.style.color = tabFontColor;
+                    b.style.removeProperty("border");   // no inline border
+                    b.style.marginBottom = "0";
+                } else if (isStyle2) {              
+                    b.style.background = tabBgColor;
+                    b.style.color = tabFontColor;
+                    b.style.removeProperty("border");        
+                    b.style.borderRadius = "0";
+                    b.style.marginBottom = "0";
+                } else {
+                    b.style.background = tabBgColor;
+                    b.style.color = tabFontColor;
+                    b.style.border = `${tabBorderWidth} ${tabBorderStyle} ${tabBorderColor}`;
+                    b.style.borderRadius = tabBorderRadius;
+                    b.style.marginBottom = "0";
+                }
+            });
+
+            previewPanels.forEach(p => p.style.display = "none");
+            btn.classList.add('active');
+            previewPanels[idx].style.display = "block";
+
+            if (isUnderline) {
+                btn.style.border = "none";
+                btn.style.color = activeTabFontColor;
+                btn.style.marginBottom = "0";
+            } else if (isHS2) {
+                btn.style.background = "#ffffff";
+                btn.style.removeProperty("border"); 
+                btn.style.color = activeTabFontColor;
+                btn.style.marginBottom = "0px";
+            } else if (isHStyle1) {
+                btn.style.background = "transparent";
+                btn.style.color = activeTabFontColor;
+                btn.style.removeProperty("border");   // no inline border
+                btn.style.marginBottom = "0";
+            } else if (isStyle2) {                  
+                btn.style.background = activeTabColor;   
+                btn.style.color = activeTabFontColor;
+                btn.style.removeProperty("border");             
+                btn.style.borderRadius = "0";
+                btn.style.marginBottom = "0";
+            } else {
+                btn.style.background = activeTabColor;
+                btn.style.color = activeTabFontColor;
+                const noBorder = element.querySelector('[name="active_tab_no_border"]')?.checked;
+                btn.style.border = noBorder ? "none" : `${tabBorderWidth} ${tabBorderStyle} ${tabBorderColor}`;
+                btn.style.borderRadius = tabBorderRadius;
+                btn.style.marginBottom = "0";
+            }
+        });
+    });
+
+    if (previewTabs[0]) {
+        const isUnderline = activeTabBorderStyle === "underline";
+        const isHS2 = (predefinedStyleInput.value === "horizontal-2");
+        const isHStyle1 = (predefinedStyleInput.value === "horizontal-1"); // added
+        const isStyle2 = (predefinedStyleInput.value === "vertical-2"); 
+
+        if (isUnderline) {
+            previewTabs[0].style.border = "none";
+            previewTabs[0].style.color = activeTabFontColor;
+            previewTabs[0].style.marginBottom = "0";
+        } else if (isHS2) {
+            previewTabs[0].style.background = "#ffffff";
+            previewTabs[0].style.removeProperty("border");
+            previewTabs[0].style.color = activeTabFontColor;
+            previewTabs[0].style.marginBottom = "0px";
+        } else if (isHStyle1) {
+            previewTabs[0].style.background = "#ffffff";
+            previewTabs[0].style.color = activeTabFontColor;
+            previewTabs[0].style.removeProperty("border");
+            previewTabs[0].style.marginBottom = "0";
+        } else if (isStyle2) {                      
+            previewTabs[0].style.background = activeTabColor;
+            previewTabs[0].style.removeProperty("border");
+            previewTabs[0].style.color = activeTabFontColor;
+            previewTabs[0].style.marginBottom = "0";
+        } else {
+            previewTabs[0].style.background = activeTabColor;
+            previewTabs[0].style.color = activeTabFontColor;
+        }
+    }
+}
+
+
+        function ensureCountAndFill() {
         while (tabsData.length < (parseInt(tabCountInput.value,10) || 1)) {
             const i = tabsData.length;
             tabsData.push({ id: `tab${i}`, title: `Title ${i+1}`, content: '' });
@@ -284,32 +317,36 @@ function initTabsXBlockStudio(runtime, element, data) {
             `;
             tabFieldsDiv.appendChild(section);
         });
+            tinymce.remove('.tinymce-tabcontent');
+
 
         setTimeout(function() {
-            document.querySelectorAll(`.tinymce-tabcontent`).forEach(function(area) {
-                if (tinymce.get(area.id)) tinymce.get(area.id).remove();
                 tinymce.init({
-                    selector: `#${area.id}`,
-                    menubar: false,
-                    plugins: 'image link lists code',
-                    toolbar: 'undo redo | formatselect | bold italic underline | forecolor backcolor | alignleft aligncenter alignright | bullist numlist | image link | code',
+                    selector: '.tinymce-tabcontent',
+                    script_url: data.script_url,
+                    skin_url: data.skin_url,
+                    theme: "silver",
+                    skin: "studio-tmce5",
+                    content_css: data.content_css,
+                    icons: 'default',
+                    icons_url: data.icons_url,
+                    plugins: "lists link table code codesample image",
+                    external_plugins: data.external_plugins,
+                    toolbar: "formatselect | fontselect | bold italic underline forecolor codesample | " +
+                            "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent blockquote | " +
+                            "link unlink image | table tabledelete | code",
                     height: 260,
                     branding: false,
-                    images_upload_handler: function (blobInfo, success, failure) {
-                        success('data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64());
-                    },
                     setup: function(editor) {
                         editor.on('change keyup', function() {
-                            area.value = editor.getContent();
-                            const idx = parseInt(area.id.split('_').pop(),10);
-                            tabsData[idx].content = area.value;
+                            const idx = parseInt(editor.id.split('_').pop(), 10);
+                            tabsData[idx].content = editor.getContent();
                             renderPreview();
                         });
                     }
                 });
-            });
-        }, 120);
-    }
+            }, 100);   
+        }
 
     function wireInputs() {
         tabCountInput.addEventListener('input', () => {
@@ -327,7 +364,6 @@ function initTabsXBlockStudio(runtime, element, data) {
             iconWidthInput, iconHeightInput, tabGapInput, introFontColorInput, introFontSizeInput, introPaddingLeftInput
         ].forEach(input => { input && input.addEventListener('input', renderPreview); });
     }
-
 
     renderTabFields();
     renderPreview();
@@ -426,14 +462,10 @@ function initTabsXBlockStudio(runtime, element, data) {
                 background_color: "#fff8f3",
                 tab_button_width: "195px",
                 tab_font_color: "#ffffff",
-                tab_font_size: "16",
-                tab_border_radius: "0px",
                 tab_bg_color: "#2039b8",
                 active_tab_color: "#d3dee7",
                 active_tab_font_color: "#2140b7",
-                tab_border_color: "#23928b",
-                tab_border_width: "0px",
-                tab_border_style: "solid"
+                active_tab_border_style: "solid" 
             },
             desc: "Vertical tabs, gray text, left-aligned, no border or underline."
         },
@@ -441,17 +473,14 @@ function initTabsXBlockStudio(runtime, element, data) {
             label: "Style 1",
             appliesTo: ["vertical"],
             settings: {
-               background_color: "#ffffff",
+                background_color: "#ffffff",
                 tab_button_width: "195px",
                 tab_font_color: "#ffffff",
-                tab_font_size: "16",
-                tab_border_radius: "0px",
                 tab_bg_color: "#2039b8",
                 active_tab_color: "#d3dee7",
                 active_tab_font_color: "#2140b7",
-                tab_border_color: "#23928b",
-                tab_border_width: "0px",
-                tab_border_style: "solid"
+                active_tab_border_style: "solid" 
+        
             },
             desc: "Vertical tabs, blue fill, active tab is blue/white."
         },
@@ -462,8 +491,6 @@ function initTabsXBlockStudio(runtime, element, data) {
                 background_color: "#ffffff",
                 tab_button_width: "195px",
                 tab_font_color: "#2140b7",
-                tab_font_size: "16",
-                tab_border_radius: "0px",
                 tab_bg_color: "#ffffff",
                 active_tab_color: "#ffffff",
                 active_tab_font_color: "#2140b7"
@@ -476,21 +503,10 @@ function initTabsXBlockStudio(runtime, element, data) {
             settings: {
                 background_color: "#ffffff",
                 tab_button_width: "auto",
-                tab_font_size: "18",
                 tab_font_color: "#6b6b6b",
-                active_tab_font_color: "#23928b",
-                active_tab_border_style: "underline",
-                underline_color: "#23928b",
-                active_tab_no_border: "true",
-                tab_bg_color: "transparent",
-                tab_border_width: "0px",
-                tab_border_style: "solid",
-                tab_border_color: "#e3e3e3",
-                tab_border_radius: "0px",
-                active_tab_color: "transparent",
-                tab_padding: "0 16px 0 16px",
-                tablink_padding: "12px 0",
-                tab_gap: "24px"
+                tab_bg_color: "#ffffff",
+                active_tab_color: "#ffffff",
+                active_tab_font_color: "#2140b7"
             },
             desc: "Grey baseline with teal underline for active tab."
         },
@@ -499,20 +515,13 @@ function initTabsXBlockStudio(runtime, element, data) {
             appliesTo: ["horizontal"],
             settings: {
                 background_color: "#ffffff",
-                tab_button_width: "auto",
-                tab_font_size: "20",
+                tab_button_width: "200px",
                 tab_font_color: "#6b6b6b",
                 tab_bg_color: "#eeeeee",
                 active_tab_color: "#ffffff",
                 active_tab_font_color: "#23928b",
-                tab_border_color: "#d9d9d9",
-                tab_border_style: "solid",
-                tab_border_radius: "8px 8px 0 0",
-                active_tab_border_style: "solid",
-                active_tab_no_border: "false",
-                tab_padding: "0 16px 0 16px",
-                tablink_padding: "14px 24px",
-                tab_gap: "12px"
+                tab_padding: "0px 0px 0px 0px",
+                tab_gap: "0px"
             },
             desc: "Card-style grey tabs; active tab white with teal outline + teal content border."
         }
@@ -574,4 +583,5 @@ function initTabsXBlockStudio(runtime, element, data) {
     if(predefinedStyleInput && predefinedStyleInput.value !== "default") {
         applyPredefinedStyle();
     }
+
 }

@@ -10,25 +10,28 @@
           <input type="text" name="display_name" class="xblock-form-control" value="{display_name}">
         </div>
 
-        <div class="xblock-form-section">
+       <div class="xblock-form-section">
           <label class="xblock-form-label">Tab Orientation</label>
-          <select name="orientation" class="xblock-form-control">
+          <select name="orientation" class="xblock-form-control" id="orientation-select">
             <option value="vertical" {vertical_selected}>Vertical Tabs</option>
             <option value="horizontal" {horizontal_selected}>Horizontal Tabs</option>
           </select>
+          <span class="xblock-form-help">Choose the general orientation of the tabs.</span>
         </div>
 
-        <div class="xblock-form-section">
-          <label class="xblock-form-label">Predefined Style</label>
-          <select name="predefined_style" class="xblock-form-control" id="predefined-style-select">
-            <option value="default" {predefined_style_default_selected}>Default</option>
-            <option value="vertical-1" {predefined_style_vertical_1_selected}>Vertical Style 1</option>
-            <option value="vertical-2" {predefined_style_vertical_2_selected}>Vertical Style 2</option>
-            <option value="horizontal-1" {predefined_style_horizontal_1_selected}>Horizontal Style 1</option>
-            <option value="horizontal-2" {predefined_style_horizontal_2_selected}>Horizontal Style 2</option>
-          </select>
-          <span class="xblock-form-help" id="predefined-style-desc"></span>
-        </div>
+       <div class="xblock-form-section">
+        <label class="xblock-form-label">Predefined Style</label>
+        <select name="predefined_style" class="xblock-form-control" id="predefined-style-select">
+          <!-- Vertical styles -->
+          <option value="default" {predefined_style_default_selected} data-orientation="both">Default</option>
+          <option value="vertical-1" {predefined_style_vertical_1_selected} data-orientation="vertical">Vertical Style 1</option>
+          <option value="vertical-2" {predefined_style_vertical_2_selected} data-orientation="vertical">Vertical Style 2</option>
+          <!-- Horizontal styles -->
+          <option value="horizontal-1" {predefined_style_horizontal_1_selected} data-orientation="horizontal">Horizontal Style 1</option>
+          <option value="horizontal-2" {predefined_style_horizontal_2_selected} data-orientation="horizontal">Horizontal Style 2</option>
+        </select>
+        <span class="xblock-form-help">Choose a predefined design variant for the tabs.</span>
+    </div>
 
         <div class="xblock-form-section">
           <label class="xblock-form-label">Text Direction</label>

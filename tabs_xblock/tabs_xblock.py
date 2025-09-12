@@ -3,6 +3,8 @@ import re
 from xblock.core import XBlock
 from xblock.fragment import Fragment
 from xblock.fields import Integer, String, List, Scope
+from django.conf import settings
+from xblock.utils.studio_editable import loader
 
 
 def safe_uid(uid):
@@ -148,8 +150,10 @@ class TabsXBlock(XBlock):
 
         frag.add_css(self.resource_string('static/public/css/tabs_xblock.css'))
         frag.add_javascript(self.resource_string('static/public/js/tabs_xblock.js'))
-        frag.add_javascript_url("https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js")
-        frag.initialize_js('initTabsXBlockStudio', {
+        frag.add_javascript_url(settings.STATIC_URL + 'js/vendor/tinymce/js/tinymce/themes/silver/theme.min.js')
+
+        # Build the payload with your XBlock fields
+        payload = {
             'tabs_content': self.tabs_content,
             'xblock_uid': safe,
 
@@ -193,10 +197,71 @@ class TabsXBlock(XBlock):
             'tab_button_padding_bottom': self.tab_button_padding_bottom,
             'tab_button_padding_left': self.tab_button_padding_left,
             'tab_gap': self.tab_gap,
-        })
+        }
+
+        js_data = {
+            'editor': getattr(self, "editor", "visual"),
+            'script_url': settings.STATIC_URL + 'js/vendor/tinymce/js/tinymce/tinymce.full.min.js',
+            'skin_url': settings.STATIC_URL + 'js/vendor/tinymce/js/tinymce/skins/ui/studio-tmce5',
+            'content_css': [settings.STATIC_URL + 'js/vendor/tinymce/js/tinymce/skins/content/default/content.min.css'],
+            'icons_url': settings.STATIC_URL + 'js/vendor/tinymce/js/tinymce/icons/default/icons.min.js',
+            'external_plugins': {
+                plugin: settings.STATIC_URL + f"js/vendor/tinymce/js/tinymce/plugins/{plugin}/plugin.min.js"
+                for plugin in ['codesample', 'image', 'link', 'lists', 'table']
+            },
+            'table_custom_classes': []
+        }
 
 
+
+
+        payload.update(js_data)
+
+        frag.initialize_js('initTabsXBlockStudio', payload)
         return frag
+
+
+    def add_edit_stylesheets(self, frag):
+        """
+        A helper method to add all styles to the fragment necesesary for edit.
+        :param frag: The fragment that will hold the scripts.
+        """
+        frag.add_css(self.resource_string('static/css/html_edit.css'))
+
+        if self.editor == 'raw':
+            frag.add_css_url(settings.STATIC_URL + 'js/vendor/CodeMirror/codemirror.css')
+
+    def add_edit_scripts(self, frag):
+        """
+        A helper method to add all scripts to the fragment necessary for edit.
+        :param frag: The fragment that will hold the scripts.
+        """
+        frag.add_javascript_url(settings.STATIC_URL + 'js/vendor/tinymce/js/tinymce/tinymce.full.min.js')
+        frag.add_javascript_url(settings.STATIC_URL + 'js/vendor/tinymce/js/tinymce/themes/silver/theme.min.js')
+        frag.add_javascript(self.resource_string('static/js/html_edit.js'))
+        frag.add_javascript(loader.load_unicode('public/studio_edit.js'))
+
+        if self.editor == 'raw':
+            frag.add_javascript_url(settings.STATIC_URL + 'js/vendor/CodeMirror/codemirror.js')
+            frag.add_javascript_url(settings.STATIC_URL + 'js/vendor/CodeMirror/addons/xml.js')
+
+    @staticmethod
+    def get_editor_plugins():
+        """
+        This method will generate a list of external plugins urls to be used in TinyMCE editor.
+        These plugins should live in `public` directory for us to generate URLs for.
+
+        :return: A list of URLs
+        """
+        plugin_path = 'plugins/{plugin}/plugin.min.js'
+        plugins = ['codesample', 'image', 'link', 'lists', 'codemirror', 'table']
+
+        return {
+            plugin: (
+                settings.STATIC_URL + "js/vendor/tinymce/js/tinymce/" +
+                plugin_path.format(plugin=plugin)
+            ) for plugin in plugins
+        }
 
     def student_view(self, context=None):
         raw_uid = str(self.scope_ids.usage_id)
@@ -269,14 +334,19 @@ class TabsXBlock(XBlock):
         <div class="{tabss_class}" style="padding:{self.tab_padding};gap:{tab_gap};{underline_style}">
 """
 
+        is_style2 = (self.predefined_style == "vertical-2")      
+        is_hstyle1 = (self.predefined_style == "horizontal-1")
+        is_hstyle2 = (self.predefined_style == "horizontal-2")
+        is_underline_mode = (active_tab_border_style == "underline")            # ★ CHANGED
+
         for idx, tab in enumerate(self.tabs_content):
             is_active = (idx == 0)
-            is_underline = (active_tab_border_style == "underline")
+            is_underline = is_underline_mode
 
             btn_font_color = active_tab_font_color if is_active else tab_font_color
             btn_bg = "transparent" if is_underline else (active_tab_color if is_active else tab_bg_color)
 
-            if is_underline:
+            if is_underline or is_style2  or is_hstyle1 or  is_hstyle2:                                       # ★ CHANGED
                 btn_border = "none"
             else:
                 btn_border = f"{tab_border_width} {tab_border_style} {tab_border_color}"
@@ -289,10 +359,8 @@ class TabsXBlock(XBlock):
                 font-size:{self.tab_font_size}px;
                 padding:{tablink_padding};
                 width:{self.tab_button_width};
-                border:{btn_border};
-                border-radius:{tab_border_radius};
-                transition:background .18s,color .18s,border .18s;
-            """.replace('\n','').replace('  ',' ')
+                {'' if (is_style2 or is_underline_mode or is_hstyle1 or  is_hstyle2) else f'border:{btn_border};'}
+            """.replace('\\n','').replace('  ',' ')
             html += f'<button class="tablinks {"active" if is_active else ""}" onclick="openTab(event, \'{tab["id"]}-{safe}\')" style="{btn_style}">{tab["title"]}</button>'
 
         html += '<p style="margin:0px;"><br></p></div>'
@@ -306,6 +374,9 @@ class TabsXBlock(XBlock):
         frag = Fragment(html)
         frag.add_css(self.resource_string('static/public/css/tabs_xblock.css'))
         frag.add_javascript(self.resource_string('static/public/js/tabs_xblock_lms.js'))
+        frag.add_css(self.resource_string('public/plugins/codesample/css/prism.css'))
+        frag.add_javascript(self.resource_string('public/plugins/codesample/js/prism.js'))
+
         return frag
 
     @XBlock.json_handler
