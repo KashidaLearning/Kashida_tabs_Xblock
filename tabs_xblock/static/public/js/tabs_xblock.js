@@ -520,7 +520,7 @@ function initTabsXBlockStudio(runtime, element, data) {
             appliesTo: ["horizontal"],
             settings: {
                 background_color: "#ffffff",
-                tab_button_width: "200px",
+                tab_button_width: "174px",
                 tab_font_color: "#6b6b6b",
                 tab_bg_color: "#eeeeee",
                 active_tab_color: "#ffffff",
