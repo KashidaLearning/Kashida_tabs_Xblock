@@ -5,6 +5,7 @@ from xblock.fragment import Fragment
 from xblock.fields import Integer, String, List, Scope
 from django.conf import settings
 from xblock.utils.studio_editable import loader
+from xblock.fields import Boolean
 
 
 def safe_uid(uid):
@@ -50,7 +51,7 @@ class TabsXBlock(XBlock):
 
     active_tab_color = String(default="#d3dee7", scope=Scope.settings)
     active_tab_font_color = String(default="#2140b7", scope=Scope.settings)
-    active_tab_no_border = String(default="false", scope=Scope.settings)
+    active_tab_no_border = Boolean(default=False, scope=Scope.settings)
     active_tab_border_style = String(default="solid", scope=Scope.settings) 
     underline_color = String(default="#23928b", scope=Scope.settings)
 
@@ -381,53 +382,54 @@ class TabsXBlock(XBlock):
 
     @XBlock.json_handler
     def save_settings(self, data, suffix=''):
-        self.display_name = data.get("display_name", self.display_name)
-        self.icon_image_url = data.get("icon_image_url", self.icon_image_url)
-        self.intro_text = data.get("intro_text", self.intro_text)
+        """
+        Save settings sent from Studio form.
+        """
 
-        self.tab_count = int(data.get("tab_count", self.tab_count))
-        self.background_color = data.get("background_color", self.background_color)
+        # Helper to avoid ValueError on empty strings
+        def safe_int(value, default):
+            try:
+                return int(value)
+            except (ValueError, TypeError):
+                return default
 
-        self.tab_font_size = int(data.get("tab_font_size", self.tab_font_size))
-        self.tab_font_color = data.get("tab_font_color", self.tab_font_color)
-
-        self.tab_padding = data.get("tab_padding", self.tab_padding)
-        self.instruction_padding = data.get("instruction_padding", self.instruction_padding)
-        self.mainbox_padding = data.get("mainbox_padding", self.mainbox_padding)
-        self.tablink_padding = data.get("tablink_padding", self.tablink_padding)
-
-        self.orientation = data.get("orientation", self.orientation)
-        self.tab_button_width = data.get("tab_button_width", self.tab_button_width)
-        self.text_direction = data.get("text_direction", self.text_direction)
-
-        self.icon_width = data.get("icon_width", self.icon_width)
-        self.icon_height = data.get("icon_height", self.icon_height)
-        self.intro_font_color = data.get("intro_font_color", self.intro_font_color)
-        self.intro_font_size = int(data.get("intro_font_size", self.intro_font_size))
-        self.intro_padding_left = data.get("intro_padding_left", self.intro_padding_left)
-
-        self.predefined_style = data.get("predefined_style", self.predefined_style)
-
-        self.tab_bg_color = data.get("tab_bg_color", self.tab_bg_color)
-        self.tab_border_color = data.get("tab_border_color", self.tab_border_color)
-        self.tab_border_width = data.get("tab_border_width", self.tab_border_width)
-        self.tab_border_style = data.get("tab_border_style", self.tab_border_style)
-        self.tab_border_radius = data.get("tab_border_radius", self.tab_border_radius)
-
-        self.active_tab_color = data.get("active_tab_color", self.active_tab_color)
+        # Strings (copy your own list; these are examples)
+        self.background_color   = data.get("background_color",   self.background_color)
+        self.tab_font_color     = data.get("tab_font_color",     self.tab_font_color)
+        self.icon_image_url     = data.get("icon_image_url",     self.icon_image_url)
+        self.intro_text         = data.get("intro_text",         self.intro_text)
+        self.tab_padding        = data.get("tab_padding",        self.tab_padding)
+        self.instruction_padding= data.get("instruction_padding",self.instruction_padding)
+        self.mainbox_padding    = data.get("mainbox_padding",    self.mainbox_padding)
+        self.tablink_padding    = data.get("tablink_padding",    self.tablink_padding)
+        self.orientation        = data.get("orientation",        self.orientation)
+        self.tab_button_width   = data.get("tab_button_width",   self.tab_button_width)
+        self.text_direction     = data.get("text_direction",     self.text_direction)
+        self.tab_bg_color       = data.get("tab_bg_color",       self.tab_bg_color)
+        self.tab_border_color   = data.get("tab_border_color",   self.tab_border_color)
+        self.tab_border_width   = data.get("tab_border_width",   self.tab_border_width)
+        self.tab_border_style   = data.get("tab_border_style",   self.tab_border_style)
+        self.tab_border_radius  = data.get("tab_border_radius",  self.tab_border_radius)
+        self.active_tab_color   = data.get("active_tab_color",   self.active_tab_color)
         self.active_tab_font_color = data.get("active_tab_font_color", self.active_tab_font_color)
-        self.active_tab_no_border = data.get("active_tab_no_border", "false")
         self.active_tab_border_style = data.get("active_tab_border_style", self.active_tab_border_style)
-        self.underline_color = data.get("underline_color", self.underline_color)
+        self.underline_color    = data.get("underline_color",    self.underline_color)
+        self.icon_width         = data.get("icon_width",         self.icon_width)
+        self.icon_height        = data.get("icon_height",        self.icon_height)
+        self.tab_gap            = data.get("tab_gap",            self.tab_gap)
+        self.intro_font_color   = data.get("intro_font_color",   self.intro_font_color)
+        self.intro_padding_left = data.get("intro_padding_left", self.intro_padding_left)
+        self.predefined_style   = data.get("predefined_style",   self.predefined_style)
 
-        self.tab_button_padding_top = data.get("tab_button_padding_top", getattr(self, "tab_button_padding_top", ""))
-        self.tab_button_padding_right = data.get("tab_button_padding_right", getattr(self, "tab_button_padding_right", ""))
-        self.tab_button_padding_bottom = data.get("tab_button_padding_bottom", getattr(self, "tab_button_padding_bottom", ""))
-        self.tab_button_padding_left = data.get("tab_button_padding_left", getattr(self, "tab_button_padding_left", ""))
+        # Integers (safe)
+        self.tab_font_size   = safe_int(data.get("tab_font_size"),   getattr(self, "tab_font_size", 16))
+        self.intro_font_size = safe_int(data.get("intro_font_size"), getattr(self, "intro_font_size", 16))
 
-        self.tab_gap = data.get("tab_gap", getattr(self, "tab_gap", "11px"))
+        # Boolean (checkbox)
+        self.active_tab_no_border = bool(data.get("active_tab_no_border", False))
 
         return {"result": "success"}
+
 
     @XBlock.json_handler
     def save_content(self, data, suffix=''):

@@ -368,12 +368,11 @@ function initTabsXBlockStudio(runtime, element, data) {
     renderTabFields();
     renderPreview();
     wireInputs();
+    runtime.notify('save', {state: 'ready'});
 
-
-    element.querySelector('.xblock-form-save-button').addEventListener('click', function(evt) {
-        evt.preventDefault();
-
-
+    // Listen for Studio’s built-in Save event
+    function save() {
+    // Collect tab content
         tabsData.forEach((tab, idx) => {
             const titleEl = tabFieldsDiv.querySelector(`[name="tab_title_${idx}"]`);
             const contentId = `tinymce_tabcontent_${xblockUid}_${idx}`;
@@ -381,53 +380,56 @@ function initTabsXBlockStudio(runtime, element, data) {
             tab.content = tinymce.get(contentId)?.getContent() || tab.content || '';
         });
 
+        const updatedTabs = tabsData.map((tab, idx) => ({
+            id: tab.id || `tab${idx}`,
+            title: tab.title,
+            content: tab.content
+        }));
+
+        // Collect settings from inputs
         const settings = {
-            display_name: element.querySelector('[name=display_name]').value,
+            background_color: bgInput?.value || "#ffffff",
+            tab_font_size: tabFontSizeInput?.value || "16",
+            tab_font_color: tabFontColorInput?.value || "#000000",
             icon_image_url: iconInput?.value || "",
             intro_text: introInput?.value || "",
-            tab_count: parseInt(tabCountInput.value,10) || tabsData.length,
-            background_color: bgInput?.value || "#fff8f3",
-            tab_font_size: tabFontSizeInput?.value || "16",
-            tab_font_color: tabFontColorInput?.value || "#6b6b6b",
-            tab_padding: tabPaddingInput?.value || "30px 30px 18px 30px",
-            instruction_padding: instructionPaddingInput?.value || "10px 15px",
-            mainbox_padding: mainboxPaddingInput?.value || "20px 0px",
-            tablink_padding: tablinkPaddingInput?.value || "12px 0",
+            tab_padding: tabPaddingInput?.value || "",
+            instruction_padding: instructionPaddingInput?.value || "",
+            mainbox_padding: mainboxPaddingInput?.value || "",
+            tablink_padding: tablinkPaddingInput?.value || "",
             orientation: orientationInput?.value || "vertical",
+            tab_button_width: tabButtonWidthInput?.value || "auto",
+            text_direction: textDirectionInput?.value || "ltr",
+            tab_bg_color: tabBgColorInput?.value || "#eeeeee",
+            tab_border_color: tabBorderColorInput?.value || "#d9d9d9",
+            tab_border_width: tabBorderWidthInput?.value || "1px",
+            tab_border_style: tabBorderStyleInput?.value || "solid",
+            tab_border_radius: tabBorderRadiusInput?.value || "0px",
+            active_tab_color: activeTabColorInput?.value || "#ffffff",
+            active_tab_font_color: activeTabFontColorInput?.value || "#23928b",
+            active_tab_border_style: activeTabBorderStyleInput?.value || "solid",
+            underline_color: underlineColorInput?.value || "#23928b",
+            active_tab_no_border: activeTabNoBorderInput?.checked || false,
+            icon_width: iconWidthInput?.value || "48px",
+            icon_height: iconHeightInput?.value || "48px",
+            tab_gap: tabGapInput?.value || "0px",
             intro_font_color: introFontColorInput?.value || "#000000",
             intro_font_size: introFontSizeInput?.value || "16",
             intro_padding_left: introPaddingLeftInput?.value || "0px",
-            tab_button_width: tabButtonWidthInput?.value || "195px",
-            text_direction: textDirectionInput?.value || "ltr",
-            icon_width: iconWidthInput?.value || "48px",
-            icon_height: iconHeightInput?.value || "48px",
-            predefined_style: predefinedStyleInput?.value || "default",
-            tab_bg_color: tabBgColorInput?.value || "#2039b8",
-            tab_border_color: tabBorderColorInput?.value || "#e3e3e3",
-            tab_border_width: tabBorderWidthInput?.value || "0px",
-            tab_border_style: tabBorderStyleInput?.value || "solid",
-            tab_border_radius: tabBorderRadiusInput?.value || "0px",
-            active_tab_color: activeTabColorInput?.value || "#d3dee7",
-            active_tab_font_color: activeTabFontColorInput?.value || "#2140b7",
-            active_tab_border_style: activeTabBorderStyleInput?.value || "solid",
-            underline_color: underlineColorInput?.value || "#23928b",
-            active_tab_no_border: activeTabNoBorderInput?.checked ? "true" : "false",
-            tab_gap: tabGapInput?.value || "11px",
+            predefined_style: predefinedStyleInput?.value || "default"
         };
 
-        const updatedTabs = tabsData.map((tab, idx) => ({
-            id: tab.id || `tab${idx}`,  
-            title: tab.title || `Tab ${idx+1}`,
-            content: tab.content || ''
-        }));
-
+        // Notify Studio that save started
         runtime.notify('save', {state: 'start'});
+
+        // First save settings
         $.ajax({
             type: "POST",
             url: runtime.handlerUrl(element, 'save_settings'),
             data: JSON.stringify(settings),
             contentType: "application/json",
             success: function() {
+                // Then save tab content
                 $.ajax({
                     type: "POST",
                     url: runtime.handlerUrl(element, 'save_content'),
@@ -436,23 +438,26 @@ function initTabsXBlockStudio(runtime, element, data) {
                     success: function() {
                         tabsData = updatedTabs.slice();
                         renderPreview();
-                        runtime.notify('save', {state: 'end'});
+                        runtime.notify('save', {state: 'end'});  // let Studio close/save cleanly
                     },
                     error: function() {
-                        runtime.notify('error', {title: 'Error saving content', message: 'Could not update tabs.'});
+                        runtime.notify('error', {
+                            title: 'Error',
+                            message: 'Could not update tabs.'
+                        });
                     }
                 });
             },
             error: function() {
-                runtime.notify('error', {title: 'Error saving settings', message: 'Could not update settings.'});
+                runtime.notify('error', {
+                    title: 'Error',
+                    message: 'Could not update settings.'
+                });
             }
         });
-    });
+    
+    }
 
-    element.querySelector('.xblock-form-cancel-button').addEventListener('click', function(evt) {
-        evt.preventDefault();
-        runtime.notify('cancel');
-    });
     
     const PREDEFINED_STYLES = {
         "default": {
@@ -583,5 +588,8 @@ function initTabsXBlockStudio(runtime, element, data) {
     if(predefinedStyleInput && predefinedStyleInput.value !== "default") {
         applyPredefinedStyle();
     }
+ return {
+    save: save
+};
 
 }
