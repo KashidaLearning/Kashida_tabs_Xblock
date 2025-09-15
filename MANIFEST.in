@@ -1,1 +1,2 @@
+recursive-include tabs_xblock/public *
 recursive-include tabs_xblock/static *
