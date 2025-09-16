@@ -588,8 +588,5 @@ function initTabsXBlockStudio(runtime, element, data) {
     if(predefinedStyleInput && predefinedStyleInput.value !== "default") {
         applyPredefinedStyle();
     }
- return {
-    save: save
-};
-
+ 
 }
