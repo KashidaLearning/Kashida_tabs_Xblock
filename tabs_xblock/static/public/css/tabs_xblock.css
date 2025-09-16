@@ -223,22 +223,24 @@
   .tabss { width: 100%; flex-direction: row; }
   .tabcontent { width: 100%; margin-top: 12px; }
 }
-/* === Responsive Fixes === */
 
-/* Remove shadows from tab buttons (all screen sizes) */
 .tabss .tablinks {
   box-shadow: none !important;
 }
 
 /* Tablet view (768px–1024px) */
 @media (max-width: 1024px) {
+  .mainbox {
+    flex-direction: column;
+  }
+
   .tabss {
     flex-wrap: wrap;
     gap: 8px;
+    justify-content: flex-start;
   }
 
   .tabss .tablinks {
-    flex: 1 1 calc(50% - 8px); /* two buttons per row */
     font-size: 15px;
     padding: 10px 14px;
   }
@@ -251,6 +253,10 @@
 
 /* Mobile view (<768px) */
 @media (max-width: 768px) {
+  .mainbox {
+    flex-direction: column;
+  }
+
   .tabss {
     flex-direction: column;
     gap: 10px;
@@ -261,6 +267,7 @@
     width: 100%;
     font-size: 14px;
     padding: 10px;
+    text-align: center;
   }
 
   .tabcontent {
@@ -268,4 +275,3 @@
     padding: 12px;
   }
 }
-
