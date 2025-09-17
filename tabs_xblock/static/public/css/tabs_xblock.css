@@ -222,5 +222,32 @@
 .tabss .tablinks {
   box-shadow: none !important;
 }
+/* ✅ Responsive tab widths for ALL orientations */
+.tabss {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.tabss .tablinks {
+  flex: 1 1 auto;        /* distribute equally */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Mobile: stack full width */
+@media (max-width: 768px) {
+  .tabss .tablinks {
+    flex: 1 1 100%;
+    width: 100% !important;
+  }
+}
+
+/* ✅ Make sure tab content always spans full width */
+.tabcontent {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 
 

@@ -107,7 +107,7 @@ class TabsXBlock(XBlock):
             horizontal_selected="selected" if self.orientation == "horizontal" else "",
             tab_button_width=self.tab_button_width,
 
-            tabs_content=self.tabs_content,
+            tabs_content=getattr(self, "tabs_content", []),
 
             text_direction=self.text_direction,
             ltr_selected="selected" if self.text_direction == "ltr" else "",
@@ -433,6 +433,9 @@ class TabsXBlock(XBlock):
 
     @XBlock.json_handler
     def save_content(self, data, suffix=''):
+        """
+        Save tab titles and contents, and also persist tab_count.
+        """
         incoming = data.get("tabs", self.tabs_content)
         cleaned = []
         for i, t in enumerate(incoming):
@@ -441,5 +444,11 @@ class TabsXBlock(XBlock):
                 "title": t.get("title", f"Tab {i+1}"),
                 "content": t.get("content", "")
             })
+
+        # Persist tabs
         self.tabs_content = cleaned
-        return {"result": "success"}
+        # 🔑 Persist count
+        self.tab_count = len(cleaned)
+
+        return {"result": "success", "count": self.tab_count}
+

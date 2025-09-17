@@ -86,213 +86,125 @@ function initTabsXBlockStudio(runtime, element, data) {
     }
 
     function renderPreview() {
-    const introFontColor = introFontColorInput?.value || "#000000";
-    const introFontSize = introFontSizeInput?.value || "16";
-    const introPaddingLeft = introPaddingLeftInput?.value || "0px";
-    const bg = bgInput?.value || "#fff8f3";
-    const tabFontSize = tabFontSizeInput?.value || "16";
-    const tabFontColor = tabFontColorInput?.value || "#6b6b6b";
-    const icon = iconInput?.value || "";
-    const iconW = iconWidthInput?.value || "48px";
-    const iconH = iconHeightInput?.value || "48px";
-    const intro = introInput?.value || "";
-    const tabPadding = tabPaddingInput?.value || "30px 30px 18px 30px";
-    const instructionPadding = instructionPaddingInput?.value || "10px 15px";
-    const mainboxPadding = mainboxPaddingInput?.value || "20px 0px";
-    const tablinkPadding = tablinkPaddingInput?.value || "12px 0";
-    const orientation = orientationInput?.value || "vertical";
-    const tabButtonWidth = tabButtonWidthInput?.value || "195px";
-    const textDirection = textDirectionInput?.value || "ltr";
-    const rtlClass = textDirection === "rtl" ? "rtl" : "";
-    const tabBgColor = tabBgColorInput?.value || "#2039b8";
-    const tabBorderColor = tabBorderColorInput?.value || "#e3e3e3";
-    const tabBorderWidth = tabBorderWidthInput?.value || "0px";
-    const tabBorderStyle = tabBorderStyleInput?.value || "solid";
-    const tabBorderRadius = tabBorderRadiusInput?.value || "0px";
-    const activeTabColor = activeTabColorInput?.value || "#d3dee7";
-    const activeTabFontColor = activeTabFontColorInput?.value || "#2140b7";
-    const activeTabBorderStyle = activeTabBorderStyleInput?.value || "solid";
-    const underlineColor = underlineColorInput?.value || "#23928b";
-    const tabGap = tabGapInput?.value || "11px";
+        const introFontColor = introFontColorInput?.value || "#000000";
+        const introFontSize = introFontSizeInput?.value || "16";
+        const introPaddingLeft = introPaddingLeftInput?.value || "0px";
+        const bg = bgInput?.value || "#fff8f3";
+        const tabFontSize = tabFontSizeInput?.value || "16";
+        const tabFontColor = tabFontColorInput?.value || "#6b6b6b";
+        const icon = iconInput?.value || "";
+        const iconW = iconWidthInput?.value || "48px";
+        const iconH = iconHeightInput?.value || "48px";
+        const intro = introInput?.value || "";
+        const tabPadding = tabPaddingInput?.value || "30px 30px 18px 30px";
+        const instructionPadding = instructionPaddingInput?.value || "10px 15px";
+        const mainboxPadding = mainboxPaddingInput?.value || "20px 0px";
+        const tablinkPadding = buildButtonPadding();
+        const orientation = orientationInput?.value || "vertical";
+        const tabButtonWidth = tabButtonWidthInput?.value || "195px";
+        const textDirection = textDirectionInput?.value || "ltr";
+        const rtlClass = textDirection === "rtl" ? "rtl" : "";
 
-    let underlineStyle = "";
-    let tabssClass = `tabss ${orientation}`;
-    if (predefinedStyleInput.value === "vertical-1") tabssClass += " style-1";
-    if (predefinedStyleInput.value === "vertical-2") tabssClass += " style-2";
-    if (predefinedStyleInput.value === "horizontal-1") tabssClass += " hstyle-1"; // added
-    if (predefinedStyleInput.value === "horizontal-2") tabssClass += " hstyle-2"; 
-    if (activeTabBorderStyle === "underline") {
-        tabssClass += " underline-active";
-        underlineStyle = `--underline-color: ${underlineColor};`;
-    }
+        const tabBgColor = tabBgColorInput?.value || "#2039b8";
+        const tabBorderColor = tabBorderColorInput?.value || "#23928b";
+        const tabBorderWidth = tabBorderWidthInput?.value || "0px";
+        const tabBorderStyle = tabBorderStyleInput?.value || "solid";
+        const tabBorderRadius = tabBorderRadiusInput?.value || "0px";
 
-    const mainboxGap = (predefinedStyleInput.value === "horizontal-2") ? "0px" : "16px";
+        const activeTabColor = activeTabColorInput?.value || "#d3dee7";
+        const activeTabFontColor = activeTabFontColorInput?.value || "#2140b7";
+        const activeTabBorderStyle = activeTabBorderStyleInput?.value || "solid";
+        const underlineColor = underlineColorInput?.value || "#23928b";
+        const noBorder = activeTabNoBorderInput?.checked || false;
+        const tabGap = tabGapInput?.value || "11px";
 
-    let html = `
-        <div class="box ${rtlClass}" dir="${textDirection}" style="background:${bg};">
-            <div class="instruction" style="padding:${instructionPadding};">
-                <div class="insticon">
-                    <img src="${icon}" style="width:${iconW};height:${iconH};object-fit:contain;border-radius:9px;"/>
-                </div>
-                <div class="insttext" style="color:${introFontColor};font-size:${Number(introFontSize)}px;padding-left:${introPaddingLeft};font-weight:500;">${intro}</div>
-            </div><br>
-            <div class="mainbox" style="padding:${mainboxPadding};display:flex;gap:${mainboxGap};">
-                <div class="${tabssClass}" style="padding:${tabPadding};gap:${tabGap};${underlineStyle}">
-    `;
-
-    const isHStyle2 = (predefinedStyleInput.value === "horizontal-2"); 
-    const isHStyle1 = (predefinedStyleInput.value === "horizontal-1"); // added
-    const isStyle2  = (predefinedStyleInput.value === "vertical-2"); 
-
-    tabsData.forEach((tab, i) => {
-        const isActive = i === 0;
-        const isUnderline = activeTabBorderStyle === "underline";
-
-        const btn_bg = isHStyle2
-            ? (isActive ? "#ffffff" : "#eeeeee")
-            : (isUnderline ? "transparent" : (isActive ? activeTabColor : tabBgColor));
-
-        const btn_font_color = isActive ? activeTabFontColor : tabFontColor;
-
-        let btn_border = "none";
-        if (!isUnderline && !isHStyle2 && !isStyle2 && !isHStyle1) { 
-            btn_border = `${tabBorderWidth} ${tabBorderStyle} ${tabBorderColor}`;
-            const noBorder = element.querySelector('[name="active_tab_no_border"]')?.checked;
-            if (isActive && noBorder) { btn_border = "none"; }
+        let tabssClass = `tabss ${orientation}`;
+        if (predefinedStyleInput.value === "vertical-1") tabssClass += " style-1";
+        if (predefinedStyleInput.value === "vertical-2") tabssClass += " style-2";
+        if (predefinedStyleInput.value === "horizontal-1") tabssClass += " hstyle-1";
+        if (predefinedStyleInput.value === "horizontal-2") tabssClass += " hstyle-2";
+        if (activeTabBorderStyle === "underline") {
+            tabssClass += " underline-active";
         }
 
-        html += `<button type="button" class="tablinks${isActive ? " active" : ""}" 
-            style="
-                width:${tabButtonWidth};
-                background:${btn_bg};
-                color:${btn_font_color};
-                font-size:${Number(tabFontSize)}px;
-                padding:${tablinkPadding};
-                ${isStyle2 || isHStyle1 || isHStyle2 ? '' : `border:${btn_border};`}
-                ${isActive && isHStyle2 ? 'margin-bottom:-3px;' : ''}
-            "
-        >${tab.title}</button>`;
-    });
+        const underlineStyle = activeTabBorderStyle === "underline" 
+            ? `--underline-color:${underlineColor};` : "";
 
-    html += `<p style="margin:0px;"><br></p></div>`;
+        let html = `
+            <div class="box ${rtlClass}" dir="${textDirection}" 
+                style="background:${bg};">
+                <div class="instruction" style="padding:${instructionPadding};">
+                    <div class="insticon">
+                        <img src="${icon}" style="width:${iconW};height:${iconH};object-fit:contain;border-radius:9px;"/>
+                    </div>
+                    <div class="insttext" style="color:${introFontColor};font-size:${Number(introFontSize)}px;padding-left:${introPaddingLeft};font-weight:500;">
+                        ${intro}
+                    </div>
+                </div><br>
+                <div class="mainbox" style="padding:${mainboxPadding};display:flex;gap:0px;">
+                    <div class="${tabssClass}" style="padding:${tabPadding};gap:${tabGap};${underlineStyle}">
+        `;
 
-    tabsData.forEach((tab, i) => {
-        html += `<div id="${(tab.id||`tab${i}`)}-${xblockUid}" class="tabcontent${i===0 ? " active" : ""}" style="display:${i===0 ? "block" : "none"};">${tab.content}</div>`;
-    });
+        const isStyle2  = (predefinedStyleInput.value === "vertical-2");
+        const isHStyle1 = (predefinedStyleInput.value === "horizontal-1");
+        const isHStyle2 = (predefinedStyleInput.value === "horizontal-2");
+        const isUnderline = (activeTabBorderStyle === "underline");
 
-    html += `</div></div>`;
-    previewDiv.innerHTML = html;
+        tabsData.forEach((tab, i) => {
+            const isActive = (i === 0);
+            const btn_font_color = isActive ? activeTabFontColor : tabFontColor;
+            let btn_bg = "transparent";
 
-
-    const box = previewDiv.querySelector('.mainbox');
-    if (!box) return;
-    const previewTabs = box.querySelectorAll('.tablinks');
-    const previewPanels = box.querySelectorAll('.tabcontent');
-    previewTabs.forEach((btn, idx) => {
-        btn.addEventListener('click', function() {
-            const isUnderline = activeTabBorderStyle === "underline";
-            const isHS2 = (predefinedStyleInput.value === "horizontal-2");
-            const isHStyle1 = (predefinedStyleInput.value === "horizontal-1"); // added
-            const isStyle2 = (predefinedStyleInput.value === "vertical-2"); 
-
-            previewTabs.forEach((b) => {
-                b.classList.remove('active');
-                if (isUnderline) {
-                    b.style.color = tabFontColor;
-                    b.style.border = "none";
-                    b.style.marginBottom = "0";
-                    b.style.borderRadius = "0";
-                } else if (isHS2) {
-                    b.style.background = "#eeeeee";
-                    b.style.color = tabFontColor;
-                    b.style.removeProperty("border");
-                    b.style.marginBottom = "0";
-                } else if (isHStyle1) {
-                    b.style.background = "transparent";
-                    b.style.color = tabFontColor;
-                    b.style.removeProperty("border");   // no inline border
-                    b.style.marginBottom = "0";
-                } else if (isStyle2) {              
-                    b.style.background = tabBgColor;
-                    b.style.color = tabFontColor;
-                    b.style.removeProperty("border");        
-                    b.style.borderRadius = "0";
-                    b.style.marginBottom = "0";
-                } else {
-                    b.style.background = tabBgColor;
-                    b.style.color = tabFontColor;
-                    b.style.border = `${tabBorderWidth} ${tabBorderStyle} ${tabBorderColor}`;
-                    b.style.borderRadius = tabBorderRadius;
-                    b.style.marginBottom = "0";
-                }
-            });
-
-            previewPanels.forEach(p => p.style.display = "none");
-            btn.classList.add('active');
-            previewPanels[idx].style.display = "block";
-
-            if (isUnderline) {
-                btn.style.border = "none";
-                btn.style.color = activeTabFontColor;
-                btn.style.marginBottom = "0";
-            } else if (isHS2) {
-                btn.style.background = "#ffffff";
-                btn.style.removeProperty("border"); 
-                btn.style.color = activeTabFontColor;
-                btn.style.marginBottom = "0px";
-            } else if (isHStyle1) {
-                btn.style.background = "transparent";
-                btn.style.color = activeTabFontColor;
-                btn.style.removeProperty("border");   // no inline border
-                btn.style.marginBottom = "0";
-            } else if (isStyle2) {                  
-                btn.style.background = activeTabColor;   
-                btn.style.color = activeTabFontColor;
-                btn.style.removeProperty("border");             
-                btn.style.borderRadius = "0";
-                btn.style.marginBottom = "0";
-            } else {
-                btn.style.background = activeTabColor;
-                btn.style.color = activeTabFontColor;
-                const noBorder = element.querySelector('[name="active_tab_no_border"]')?.checked;
-                btn.style.border = noBorder ? "none" : `${tabBorderWidth} ${tabBorderStyle} ${tabBorderColor}`;
-                btn.style.borderRadius = tabBorderRadius;
-                btn.style.marginBottom = "0";
+            if (!isUnderline) {
+                btn_bg = isActive ? activeTabColor : tabBgColor;
             }
+
+            let btn_border = "none";
+            if (!(isUnderline || isStyle2 || isHStyle1 || isHStyle2)) {
+                btn_border = `${tabBorderWidth} ${tabBorderStyle} ${tabBorderColor}`;
+                if (isActive && noBorder) {
+                    btn_border = "none";
+                }
+            }
+
+            html += `<button type="button" class="tablinks${isActive ? " active" : ""}"
+                style="
+                    background:${btn_bg};
+                    color:${btn_font_color};
+                    font-size:${Number(tabFontSize)}px;
+                    padding:${tablinkPadding};
+                    ${isStyle2 || isUnderline || isHStyle1 || isHStyle2 ? '' : `border:${btn_border};`}
+                    border-radius:${tabBorderRadius};
+                "
+            >${tab.title}</button>`;
         });
-    });
 
-    if (previewTabs[0]) {
-        const isUnderline = activeTabBorderStyle === "underline";
-        const isHS2 = (predefinedStyleInput.value === "horizontal-2");
-        const isHStyle1 = (predefinedStyleInput.value === "horizontal-1"); // added
-        const isStyle2 = (predefinedStyleInput.value === "vertical-2"); 
+        html += `<p style="margin:0px;"><br></p></div>`;
 
-        if (isUnderline) {
-            previewTabs[0].style.border = "none";
-            previewTabs[0].style.color = activeTabFontColor;
-            previewTabs[0].style.marginBottom = "0";
-        } else if (isHS2) {
-            previewTabs[0].style.background = "#ffffff";
-            previewTabs[0].style.removeProperty("border");
-            previewTabs[0].style.color = activeTabFontColor;
-            previewTabs[0].style.marginBottom = "0px";
-        } else if (isHStyle1) {
-            previewTabs[0].style.background = "#ffffff";
-            previewTabs[0].style.color = activeTabFontColor;
-            previewTabs[0].style.removeProperty("border");
-            previewTabs[0].style.marginBottom = "0";
-        } else if (isStyle2) {                      
-            previewTabs[0].style.background = activeTabColor;
-            previewTabs[0].style.removeProperty("border");
-            previewTabs[0].style.color = activeTabFontColor;
-            previewTabs[0].style.marginBottom = "0";
-        } else {
-            previewTabs[0].style.background = activeTabColor;
-            previewTabs[0].style.color = activeTabFontColor;
-        }
+        tabsData.forEach((tab, i) => {
+            html += `<div id="${(tab.id || `tab${i}`)}-${xblockUid}" 
+                        class="tabcontent${i===0 ? " active" : ""}" 
+                        style="display:${i===0 ? "block" : "none"};">
+                        ${tab.content}
+                    </div>`;
+        });
+
+        html += `</div></div>`;
+        previewDiv.innerHTML = html;
+
+        const previewTabs = previewDiv.querySelectorAll('.tablinks');
+        const previewPanels = previewDiv.querySelectorAll('.tabcontent');
+
+        previewTabs.forEach((btn, idx) => {
+            btn.addEventListener('click', function() {
+                previewTabs.forEach(b => b.classList.remove('active'));
+                previewPanels.forEach(p => p.style.display = "none");
+                btn.classList.add('active');
+                previewPanels[idx].style.display = "block";
+            });
+        });
     }
-}
+
 
 
         function ensureCountAndFill() {
@@ -306,47 +218,58 @@ function initTabsXBlockStudio(runtime, element, data) {
     function renderTabFields() {
         ensureCountAndFill();
         tabFieldsDiv.innerHTML = '';
+
         tabsData.forEach((tab, idx) => {
             const section = document.createElement('div');
             section.className = 'xblock-form-section';
             section.innerHTML = `
-                <label class="xblock-form-label">Tab ${idx+1} Title</label>
+                <label class="xblock-form-label">Tab ${idx + 1} Title</label>
                 <input type="text" name="tab_title_${idx}" class="xblock-form-control" value="${tab.title}">
-                <label class="xblock-form-label" style="margin-top:10px;">Tab ${idx+1} Content</label>
-                <textarea id="tinymce_tabcontent_${xblockUid}_${idx}" name="tab_content_${idx}" class="xblock-form-control tinymce-tabcontent" rows="12">${tab.content}</textarea>
+                <label class="xblock-form-label" style="margin-top:10px;">Tab ${idx + 1} Content</label>
+                <textarea id="tinymce_tabcontent_${xblockUid}_${idx}" 
+                        name="tab_content_${idx}" 
+                        class="xblock-form-control tinymce-tabcontent" 
+                        rows="12">${tab.content}</textarea>
             `;
             tabFieldsDiv.appendChild(section);
         });
-            tinymce.remove('.tinymce-tabcontent');
 
+        // Remove old editors cleanly
+        tinymce.remove('.tinymce-tabcontent');
 
+        // Initialize TinyMCE per textarea
         setTimeout(function() {
-                tinymce.init({
-                    selector: '.tinymce-tabcontent',
-                    script_url: data.script_url,
-                    skin_url: data.skin_url,
-                    theme: "silver",
-                    skin: "studio-tmce5",
-                    content_css: data.content_css,
-                    icons: 'default',
-                    icons_url: data.icons_url,
-                    plugins: "lists link table code codesample image",
-                    external_plugins: data.external_plugins,
-                    toolbar: "formatselect | fontselect | bold italic underline forecolor codesample | " +
-                            "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent blockquote | " +
-                            "link unlink image | table tabledelete | code",
-                    height: 260,
-                    branding: false,
-                    setup: function(editor) {
-                        editor.on('change keyup', function() {
-                            const idx = parseInt(editor.id.split('_').pop(), 10);
-                            tabsData[idx].content = editor.getContent();
-                            renderPreview();
-                        });
-                    }
-                });
-            }, 100);   
-        }
+            document.querySelectorAll(`#tabs-xblock-tab-fields .tinymce-tabcontent`).forEach((el) => {
+                if (!tinymce.get(el.id)) {
+                    tinymce.init({
+                        target: el,
+                        script_url: data.script_url,
+                        skin_url: data.skin_url,
+                        theme: "silver",
+                        skin: "studio-tmce5",
+                        content_css: data.content_css,
+                        icons: 'default',
+                        icons_url: data.icons_url,
+                        plugins: "lists link table code codesample image",
+                        external_plugins: data.external_plugins,
+                        toolbar: "formatselect | fontselect | bold italic underline forecolor codesample | " +
+                                "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent blockquote | " +
+                                "link unlink image | table tabledelete | code",
+                        height: 260,
+                        branding: false,
+                        setup: function(editor) {
+                            editor.on('change keyup', function() {
+                                const idx = parseInt(editor.id.split('_').pop(), 10);
+                                tabsData[idx].content = editor.getContent();
+                                renderPreview();
+                            });
+                        }
+                    });
+                }
+            });
+        }, 100);
+    }
+
 
     function wireInputs() {
         tabCountInput.addEventListener('input', () => {
@@ -370,9 +293,7 @@ function initTabsXBlockStudio(runtime, element, data) {
     wireInputs();
     runtime.notify('save', {state: 'ready'});
 
-    // Listen for Studio’s built-in Save event
     function save() {
-    // Collect tab content
         tabsData.forEach((tab, idx) => {
             const titleEl = tabFieldsDiv.querySelector(`[name="tab_title_${idx}"]`);
             const contentId = `tinymce_tabcontent_${xblockUid}_${idx}`;
@@ -386,7 +307,7 @@ function initTabsXBlockStudio(runtime, element, data) {
             content: tab.content
         }));
 
-        // Collect settings from inputs
+        // Collect settings (✅ now includes tab_count)
         const settings = {
             background_color: bgInput?.value || "#ffffff",
             tab_font_size: tabFontSizeInput?.value || "16",
@@ -416,7 +337,8 @@ function initTabsXBlockStudio(runtime, element, data) {
             intro_font_color: introFontColorInput?.value || "#000000",
             intro_font_size: introFontSizeInput?.value || "16",
             intro_padding_left: introPaddingLeftInput?.value || "0px",
-            predefined_style: predefinedStyleInput?.value || "default"
+            predefined_style: predefinedStyleInput?.value || "default",
+            tab_count: tabCountInput?.value || updatedTabs.length   // 🔑 ensure Studio reopens with correct number
         };
 
         // Notify Studio that save started
@@ -455,7 +377,6 @@ function initTabsXBlockStudio(runtime, element, data) {
                 });
             }
         });
-    
     }
 
     
@@ -588,5 +509,8 @@ function initTabsXBlockStudio(runtime, element, data) {
     if(predefinedStyleInput && predefinedStyleInput.value !== "default") {
         applyPredefinedStyle();
     }
- 
+    return {
+        save: save
+    };
+
 }
