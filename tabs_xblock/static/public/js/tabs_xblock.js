@@ -438,7 +438,7 @@ function initTabsXBlockStudio(runtime, element, data) {
                     success: function() {
                         tabsData = updatedTabs.slice();
                         renderPreview();
-                        runtime.notify('save', {state: 'end'});  // let Studio close/save cleanly
+                        runtime.notify('save', {state: 'end'});  
                     },
                     error: function() {
                         runtime.notify('error', {
